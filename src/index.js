@@ -5,6 +5,7 @@ import { pool } from './db/db.js'
 
 import { typeDefs } from './schema.js'
 import getCards from './db/getCards.js'
+import getUsers from './db/getUsers.js'
 // A schema is a collection of type definitions (hence "typeDefs")
 // that together define the "shape" of queries that are executed against
 // your data.
@@ -30,6 +31,9 @@ const resolvers = {
         async cards() {
             const response = await getCards(pool)
             return response.rows
+        },
+        async users() {
+            return await getUsers(pool)
         }
     }
 }

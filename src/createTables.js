@@ -17,6 +17,32 @@ cards(
     image_url VARCHAR(250) NOT NULL
 );`;
 
+const users = `
+CREATE TABLE users (
+	id SERIAL PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+	first_name VARCHAR(50),
+	last_name VARCHAR(50)
+)
+`
+
+const ownedCards = `
+CREATE TYPE card_condition AS ENUM (
+    'NM',
+    'LP',
+    'MP',
+    'HP',
+    'D'
+);
+
+CREATE TABLE IF NOT EXISTS
+    owned_cards(
+        id int NOT NULL PRIMARY KEY NOT NULL
+        card_id UUID references cards(id) NOT NULL
+        condition card_condition NOT NULL
+    )
+`
+
 console.log('creating images table...')
 pool.query(imagesTable)
     .then((res) => {
