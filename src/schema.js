@@ -12,8 +12,19 @@ export const typeDefs = `#graphql
         last_name: String
         username: String!
     }
+    type OwnedCard {
+        id: Int!
+        card_id: ID!
+        user_id: Int!
+        condition: String!
+        details: Card
+    }
     type Query {
         cards: [Card]
+        card(id: ID!): Card
         users: [User]
+        user(id: Int!): User
+        ownedCards: [OwnedCard]
+        ownedCard(id: Int!): OwnedCard
     }
 `

@@ -39,8 +39,9 @@ CREATE TABLE IF NOT EXISTS
     owned_cards(
         id int NOT NULL PRIMARY KEY NOT NULL
         card_id UUID references cards(id) NOT NULL
+        user_id int references users(id) NOT NULL
         condition card_condition NOT NULL
-    )
+    );
 `
 
 console.log('creating images table...')
