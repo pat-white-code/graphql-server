@@ -17,7 +17,6 @@ export const typeDefs = `#graphql
         card_id: ID!
         user_id: Int!
         condition: String!
-        details: Card
     }
     type Query {
         cards: [Card]
