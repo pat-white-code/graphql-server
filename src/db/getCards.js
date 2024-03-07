@@ -1,6 +1,7 @@
 // import { Pool } from "pg"
 
 const getCards = async (pool) => {
+    debugger
     const client = await pool.connect()
 
     const query = `SELECT * FROM cards`

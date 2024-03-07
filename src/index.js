@@ -10,6 +10,8 @@ import getOwnedCards from './db/getOwnedCards.js'
 import getUserById from './db/getUserById.js'
 import getCardById from './db/getCardById.js'
 import getOwnedCardById from './db/getOwnedCardById.js'
+import getOwnedCardsByUser from './db/getOwnedCardsByUser.js'
+import getOwnedCardsByCardId from './db/getOwnedCardsByCardId.js'
 
 const resolvers = {
     Query: {
@@ -32,6 +34,28 @@ const resolvers = {
         },
         async ownedCard(_, { id }) {
             return await getOwnedCardById(id)
+        }
+    },
+    User: {
+        async ownedCards(parent) {
+            const userId = parent.id
+            return await getOwnedCardsByUser(userId)
+        }
+    },
+    OwnedCard: {
+        async card(parent) {
+            const cardId = parent.card_id
+            return await getCardById(pool, cardId)
+        },
+        async user(parent) {
+            const userId = parent.user_id
+            return await getUserById(pool, userId)
+        }
+    },
+    Card: {
+        async ownedCards(parent) {
+            const cardId = parent.id
+            return await getOwnedCardsByCardId(cardId)
         }
     }
 }
