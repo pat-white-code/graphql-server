@@ -8,31 +8,19 @@ import getCards from './db/getCards.js'
 import getUsers from './db/getUsers.js'
 import getOwnedCards from './db/getOwnedCards.js'
 import getUserById from './db/getUserById.js'
-// A schema is a collection of type definitions (hence "typeDefs")
-// that together define the "shape" of queries that are executed against
-// your data.
-// const typeDefs = `#graphql
-//     # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
-
-//     # This "Book" type defines the queryable fields for every book in our data source.
-//     type Book {
-//     title: String
-//     author: String
-//     }
-
-//     # The "Query" type is special: it lists all of the available queries that
-//     # clients can execute, along with the return type for each. In this
-//     # case, the "books" query returns an array of zero or more Books (defined above).
-//     type Query {
-//         books: [Book]
-//     }
-// `;
+import getCardById from './db/getCardById.js'
+import getOwnedCardById from './db/getOwnedCardById.js'
+import getOwnedCardsByUser from './db/getOwnedCardsByUser.js'
+import getOwnedCardsByCardId from './db/getOwnedCardsByCardId.js'
 
 const resolvers = {
     Query: {
         async cards() {
             const response = await getCards(pool)
             return response.rows
+        },
+        async card(_, { id }) {
+            return await getCardById(pool, id)
         },
         async user(_, args) {
             const userId = args.id
@@ -43,6 +31,31 @@ const resolvers = {
         },
         async ownedCards() {
             return await getOwnedCards(pool)
+        },
+        async ownedCard(_, { id }) {
+            return await getOwnedCardById(id)
+        }
+    },
+    User: {
+        async ownedCards(parent) {
+            const userId = parent.id
+            return await getOwnedCardsByUser(userId)
+        }
+    },
+    OwnedCard: {
+        async card(parent) {
+            const cardId = parent.card_id
+            return await getCardById(pool, cardId)
+        },
+        async user(parent) {
+            const userId = parent.user_id
+            return await getUserById(pool, userId)
+        }
+    },
+    Card: {
+        async ownedCards(parent) {
+            const cardId = parent.id
+            return await getOwnedCardsByCardId(cardId)
         }
     }
 }
